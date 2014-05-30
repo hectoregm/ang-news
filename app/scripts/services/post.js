@@ -48,6 +48,15 @@ app.factory('Post', function ($resource, $firebase, FIREBASE_URL, User) {
           user.$child('comments').$child(ref.name()).$set({id: ref.name(), postId: postId});
         });
       }
+    },
+    deleteComment: function (post, comment, commentId) {
+      if (User.signedIn()) {
+        var user = User.findByUsername(comment.username);
+        
+        post.$child('comments').$remove(commentId).then(function () {
+          user.$child('comments').$remove(commentId);
+        });
+      }
     }
   };
   
